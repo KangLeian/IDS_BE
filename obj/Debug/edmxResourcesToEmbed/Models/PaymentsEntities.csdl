@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ApiPaymentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="payment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="productID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="productName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="customerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="statID" Type="Int32" />
+    <Property Name="transactionDate" Type="DateTime" Precision="0" />
+    <Property Name="createBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="createOn" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="stat" Relationship="Self.FK__payments__statID__25869641" FromRole="payments" ToRole="stat" />
+  </EntityType>
+  <EntityType Name="stat">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="payments" Relationship="Self.FK__payments__statID__25869641" FromRole="stat" ToRole="payments" />
+  </EntityType>
+  <Association Name="FK__payments__statID__25869641">
+    <End Role="stat" Type="Self.stat" Multiplicity="0..1" />
+    <End Role="payments" Type="Self.payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stat">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="payments">
+        <PropertyRef Name="statID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="payments" EntityType="Self.payment" />
+    <EntitySet Name="stats" EntityType="Self.stat" />
+    <AssociationSet Name="FK__payments__statID__25869641" Association="Self.FK__payments__statID__25869641">
+      <End Role="stat" EntitySet="stats" />
+      <End Role="payments" EntitySet="payments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

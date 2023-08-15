@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ApiPaymentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="payments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="productID" Type="varchar" MaxLength="100" />
+          <Property Name="productName" Type="varchar" MaxLength="100" />
+          <Property Name="amount" Type="varchar" MaxLength="100" />
+          <Property Name="customerName" Type="varchar" MaxLength="100" />
+          <Property Name="statID" Type="int" />
+          <Property Name="transactionDate" Type="date" />
+          <Property Name="createBy" Type="varchar" MaxLength="100" />
+          <Property Name="createOn" Type="date" />
+        </EntityType>
+        <EntityType Name="stat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK__payments__statID__25869641">
+          <End Role="stat" Type="Self.stat" Multiplicity="0..1" />
+          <End Role="payments" Type="Self.payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="statID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ApiPaymentModelStoreContainer">
+          <EntitySet Name="payments" EntityType="Self.payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stat" EntityType="Self.stat" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__payments__statID__25869641" Association="Self.FK__payments__statID__25869641">
+            <End Role="stat" EntitySet="stat" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ApiPaymentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="productID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="productName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="customerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="statID" Type="Int32" />
+          <Property Name="transactionDate" Type="DateTime" Precision="0" />
+          <Property Name="createBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="createOn" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="stat" Relationship="Self.FK__payments__statID__25869641" FromRole="payments" ToRole="stat" />
+        </EntityType>
+        <EntityType Name="stat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="payments" Relationship="Self.FK__payments__statID__25869641" FromRole="stat" ToRole="payments" />
+        </EntityType>
+        <Association Name="FK__payments__statID__25869641">
+          <End Role="stat" Type="Self.stat" Multiplicity="0..1" />
+          <End Role="payments" Type="Self.payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="statID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="payments" EntityType="Self.payment" />
+          <EntitySet Name="stats" EntityType="Self.stat" />
+          <AssociationSet Name="FK__payments__statID__25869641" Association="Self.FK__payments__statID__25869641">
+            <End Role="stat" EntitySet="stats" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ApiPaymentModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="payments">
+            <EntityTypeMapping TypeName="ApiPaymentModel.payment">
+              <MappingFragment StoreEntitySet="payments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="productID" ColumnName="productID" />
+                <ScalarProperty Name="productName" ColumnName="productName" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="statID" ColumnName="statID" />
+                <ScalarProperty Name="transactionDate" ColumnName="transactionDate" />
+                <ScalarProperty Name="createBy" ColumnName="createBy" />
+                <ScalarProperty Name="createOn" ColumnName="createOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stats">
+            <EntityTypeMapping TypeName="ApiPaymentModel.stat">
+              <MappingFragment StoreEntitySet="stat">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
